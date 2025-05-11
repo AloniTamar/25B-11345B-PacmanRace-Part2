@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_LAY_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_soft_blue"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main_LAY_lives"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_IMG_heart1"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:src="@drawable/ic_heart"
+            android:contentDescription="@null" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_IMG_heart2"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:layout_marginStart="@dimen/heart_spacing"
+            android:src="@drawable/ic_heart"
+            android:contentDescription="@null" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/main_IMG_heart3"
+            android:layout_width="@dimen/heart_size"
+            android:layout_height="@dimen/heart_size"
+            android:layout_marginStart="@dimen/heart_spacing"
+            android:src="@drawable/ic_heart"
+            android:contentDescription="@null" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <GridLayout
+        android:id="@+id/main_GRID_game"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/game_grid_height"
+        android:layout_below="@id/main_LAY_lives"
+        android:layout_above="@id/main_LAY_controls"
+        android:paddingStart="@dimen/button_padding_horizontal"
+        android:paddingEnd="@dimen/button_padding_horizontal"
+        android:columnCount="3"
+        android:rowCount="7" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main_LAY_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/bottom_margin_controls"
+        android:paddingStart="@dimen/button_padding_horizontal"
+        android:paddingEnd="@dimen/button_padding_horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_IMG_leftBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_left"
+            android:contentDescription="@string/move_left"
+            app:backgroundTint="@color/purple_300" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_IMG_rightBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            android:contentDescription="@string/move_right"
+            app:backgroundTint="@color/purple_300" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>

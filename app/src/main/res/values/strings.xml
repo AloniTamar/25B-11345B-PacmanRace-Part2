@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">25B-11345B-PacmanRace</string>
+    <string name="move_left">Move left</string>
+    <string name="move_right">Move right</string>
+</resources>
