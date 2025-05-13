@@ -1,4 +1,4 @@
-package com.tamara.a25b_11345b_pacmanrace
+package com.tamara.a25b_11345b_pacmanrace.logic
 
 import kotlin.random.Random
 
@@ -42,25 +42,25 @@ class GameLogic(private val rows: Int = 11, private val cols: Int = 5) {
             return true
         }
 
-        val chance = Random.nextInt(100)
+        val chance = Random.Default.nextInt(100)
 
         if (chance in 0..49) {
-            val ghostCol = Random.nextInt(cols)
-            val ghostType = Random.nextInt(1, 4)
+            val ghostCol = Random.Default.nextInt(cols)
+            val ghostType = Random.Default.nextInt(1, 4)
             obstacleMatrix[0][ghostCol] = ghostType
 
         } else if (chance in 50..66) {
-            val coinCol = Random.nextInt(cols)
+            val coinCol = Random.Default.nextInt(cols)
             obstacleMatrix[0][coinCol] = 4
 
         } else if (chance in 67..84) {
-            val ghostCol = Random.nextInt(cols)
-            val ghostType = Random.nextInt(1, 4)
+            val ghostCol = Random.Default.nextInt(cols)
+            val ghostType = Random.Default.nextInt(1, 4)
             obstacleMatrix[0][ghostCol] = ghostType
 
-            var coinCol = Random.nextInt(cols)
+            var coinCol = Random.Default.nextInt(cols)
             while (coinCol == ghostCol) {
-                coinCol = Random.nextInt(cols)
+                coinCol = Random.Default.nextInt(cols)
             }
             obstacleMatrix[0][coinCol] = 4
         }
