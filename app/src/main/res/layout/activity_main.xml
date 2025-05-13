@@ -50,8 +50,36 @@
         android:layout_above="@id/main_LAY_controls"
         android:paddingStart="@dimen/button_padding_horizontal"
         android:paddingEnd="@dimen/button_padding_horizontal"
-        android:columnCount="3"
-        android:rowCount="7" />
+        android:columnCount="5"
+        android:rowCount="11" />
+
+    <LinearLayout
+        android:id="@+id/infoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        tools:ignore="RelativeOverlap">
+
+        <TextView
+            android:id="@+id/scoreTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score_0"
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/distanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/distance_0"
+            android:textSize="18sp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/main_LAY_controls"

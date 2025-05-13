@@ -1,5 +1,6 @@
 package com.tamara.a25b_11345b_pacmanrace
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
@@ -7,6 +8,7 @@ import android.widget.GridLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.os.CountDownTimer
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.tamara.a25b_11345b_pacmanrace.utilities.SignalManager
 
@@ -18,10 +20,16 @@ class MainActivity : AppCompatActivity() {
     private var rightBtn: FloatingActionButton? = null
     private var gameTimer: CountDownTimer? = null
     private var lives = 3
+    private var score = 0
+    private var distance = 0
+    private var scoreTextView: TextView? = null
+    private var useSensor: Boolean = false
+    private var distanceTextView: TextView? = null
+
 
     companion object {
-        private const val NUM_ROWS = 7
-        private const val NUM_COLS = 3
+        private const val NUM_ROWS = 11
+        private const val NUM_COLS = 5
         private const val MARGINS = 16
         private const val PADDING = 8
     }
@@ -29,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        useSensor = intent.getBooleanExtra("EXTRA_SENSOR_ENABLED", false)
 
         SignalManager.init(this)
 
@@ -41,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         initListeners()
         startGame()
     }
-
 
     private fun drawPlayer() {
         val col = gameLogic?.getPlayerColumn() ?: return
@@ -56,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         val col = gameLogic?.getPlayerColumn() ?: return
         val playerCell = grid?.get(NUM_ROWS - 1)?.getOrNull(col) ?: return
 
-        playerCell.setBackgroundResource(R.drawable.ic_game)
+        playerCell.setBackgroundResource(R.drawable.ic_ghost_green)
         playerCell.visibility = View.INVISIBLE
     }
 
@@ -64,9 +72,15 @@ class MainActivity : AppCompatActivity() {
     private fun startGame() {
         gameTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
             override fun onTick(millisUntilFinished: Long) {
-                gameLogic?.updateObstacles()
+                val moved = gameLogic?.updateObstacles() ?: false
+                if (moved) {
+                    distance += 100
+                    distanceTextView?.text = "Distance: $distance"
+                }
+
                 checkPlayerCollision()
                 drawObstacles()
+                checkCoinCollection()
             }
 
             override fun onFinish() {
@@ -82,14 +96,32 @@ class MainActivity : AppCompatActivity() {
         for (row in 0 until NUM_ROWS) {
             for (col in 0 until NUM_COLS) {
                 val imageView = grid?.getOrNull(row)?.getOrNull(col) ?: continue
-                imageView.visibility = if (matrix[row][col] == 1) View.VISIBLE else View.INVISIBLE
+                when (matrix[row][col]) {
+                    1 -> {
+                        imageView.setBackgroundResource(R.drawable.ic_ghost_blue)
+                        imageView.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        imageView.setBackgroundResource(R.drawable.ic_ghost_green)
+                        imageView.visibility = View.VISIBLE
+                    }
+                    3 -> {
+                        imageView.setBackgroundResource(R.drawable.ic_ghost_red)
+                        imageView.visibility = View.VISIBLE
+                    }
+                    4 -> {
+                        imageView.setBackgroundResource(R.drawable.ic_coin)
+                        imageView.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        imageView.visibility = View.INVISIBLE
+                    }
+                }
             }
         }
 
         drawPlayer()
     }
-
-
 
     private fun updateHeartsUI() {
         val hearts = listOf(
@@ -103,15 +135,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun resetGame() {
         lives = 3
+        score = 0
         updateHeartsUI()
         gameLogic?.resetGame()
+        scoreTextView?.text = "Score: $score"
     }
+
 
     private fun findViews() {
         leftBtn = findViewById(R.id.main_IMG_leftBtn)
         rightBtn = findViewById(R.id.main_IMG_rightBtn)
+
+        scoreTextView = findViewById(R.id.scoreTextView)
+        distanceTextView = findViewById(R.id.distanceTextView)
 
         val gridLayout = findViewById<GridLayout>(R.id.main_GRID_game)
         gridLayout.removeAllViews()
@@ -135,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                 imageView.scaleType = ImageView.ScaleType.FIT_CENTER
                 imageView.setPadding(PADDING, PADDING, PADDING, PADDING)
 
-                imageView.setBackgroundResource(R.drawable.ic_game)
+                imageView.setBackgroundResource(R.drawable.ic_ghost_green)
                 imageView.visibility = ImageView.INVISIBLE
 
                 gridLayout.addView(imageView)
@@ -143,6 +182,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
 
     private fun initViews() {
@@ -156,6 +196,7 @@ class MainActivity : AppCompatActivity() {
             gameLogic?.moveLeft()
             drawPlayer()
             checkPlayerCollision()
+            checkCoinCollection()
         }
 
         rightBtn?.setOnClickListener {
@@ -163,6 +204,7 @@ class MainActivity : AppCompatActivity() {
             gameLogic?.moveRight()
             drawPlayer()
             checkPlayerCollision()
+            checkCoinCollection()
         }
     }
 
@@ -174,7 +216,7 @@ class MainActivity : AppCompatActivity() {
             SignalManager.getInstance().vibrate()
 
             if (lives == 0) {
-                SignalManager.getInstance().toast("Game Over! Restarting...")
+                SignalManager.getInstance().toast("Game Over! Score: $score\"")
 
                 gameLogic?.setGenerateObstacles(false)
 
@@ -192,5 +234,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun checkCoinCollection() {
+        val col = gameLogic?.getPlayerColumn() ?: return
+        val matrix = gameLogic?.getObstacleMatrix() ?: return
+
+        if (matrix[NUM_ROWS - 1][col] == 4) {
+            score += 1
+            scoreTextView?.text = "Score: $score"
+            gameLogic?.resetBottomRow()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateDistanceUI() {
+        val scoreText = "Score: $score"
+        val distanceText = "Distance: $distance"
+        scoreTextView?.text = "$scoreText\n$distanceText"
+    }
+
 
 }

@@ -2,4 +2,9 @@
     <string name="app_name">25B-11345B-PacmanRace</string>
     <string name="move_left">Move left</string>
     <string name="move_right">Move right</string>
+    <string name="score_0">Score: 0</string>
+    <string name="distance_0">Distance: 0</string>
+    <string name="start_game">Start Game</string>
+    <string name="high_scores">High Scores</string>
+    <string name="tilt_movement">Tilt Movement</string>
 </resources>

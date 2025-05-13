@@ -2,14 +2,14 @@ package com.tamara.a25b_11345b_pacmanrace
 
 import kotlin.random.Random
 
-class GameLogic(private val rows: Int = 7, private val cols: Int = 3) {
+class GameLogic(private val rows: Int = 11, private val cols: Int = 5) {
 
     private val obstacleMatrix: Array<IntArray> = Array(rows) { IntArray(cols) { 0 } }
-    private var generateObstacle = true
     private var generateObstacles = true
+    private var emptyRowCooldown = 0
 
     companion object {
-        private var PLAYER_COL = 1
+        private var PLAYER_COL = 2
     }
 
     fun getPlayerColumn(): Int = PLAYER_COL
@@ -24,8 +24,9 @@ class GameLogic(private val rows: Int = 7, private val cols: Int = 3) {
         if (PLAYER_COL < cols - 1) PLAYER_COL++
     }
 
-    fun updateObstacles() {
-        if (!generateObstacles) return
+    fun updateObstacles(): Boolean {
+        if (!generateObstacles) return false
+
         for (row in rows - 2 downTo 0) {
             for (col in 0 until cols) {
                 obstacleMatrix[row + 1][col] = obstacleMatrix[row][col]
@@ -36,13 +37,37 @@ class GameLogic(private val rows: Int = 7, private val cols: Int = 3) {
             obstacleMatrix[0][col] = 0
         }
 
-        if (generateObstacle) {
-            obstacleMatrix[0][Random.nextInt(cols)] = 1
+        if (emptyRowCooldown > 0) {
+            emptyRowCooldown--
+            return true
         }
 
-        generateObstacle = !generateObstacle
-    }
+        val chance = Random.nextInt(100)
 
+        if (chance in 0..49) {
+            val ghostCol = Random.nextInt(cols)
+            val ghostType = Random.nextInt(1, 4)
+            obstacleMatrix[0][ghostCol] = ghostType
+
+        } else if (chance in 50..66) {
+            val coinCol = Random.nextInt(cols)
+            obstacleMatrix[0][coinCol] = 4
+
+        } else if (chance in 67..84) {
+            val ghostCol = Random.nextInt(cols)
+            val ghostType = Random.nextInt(1, 4)
+            obstacleMatrix[0][ghostCol] = ghostType
+
+            var coinCol = Random.nextInt(cols)
+            while (coinCol == ghostCol) {
+                coinCol = Random.nextInt(cols)
+            }
+            obstacleMatrix[0][coinCol] = 4
+        }
+
+        emptyRowCooldown = 1
+        return true
+    }
     fun checkCollision(): Boolean {
         return obstacleMatrix[rows - 1][PLAYER_COL] == 1
     }
@@ -54,7 +79,7 @@ class GameLogic(private val rows: Int = 7, private val cols: Int = 3) {
     }
 
     fun resetGame() {
-        PLAYER_COL = 1
+        PLAYER_COL = 2
         for (row in 0 until rows) {
             for (col in 0 until cols) {
                 obstacleMatrix[row][col] = 0
