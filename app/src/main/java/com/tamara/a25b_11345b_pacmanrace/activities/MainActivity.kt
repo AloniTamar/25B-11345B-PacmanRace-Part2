@@ -1,4 +1,4 @@
-package com.tamara.a25b_11345b_pacmanrace
+package com.tamara.a25b_11345b_pacmanrace.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,6 +10,8 @@ import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import com.tamara.a25b_11345b_pacmanrace.logic.GameLogic
+import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.utilities.SignalManager
 
 class MainActivity : AppCompatActivity() {

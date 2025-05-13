@@ -1,4 +1,4 @@
-package com.tamara.a25b_11345b_pacmanrace
+package com.tamara.a25b_11345b_pacmanrace.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import com.tamara.a25b_11345b_pacmanrace.R
 
 @SuppressLint("UseSwitchCompatOrMaterialCode")
 class MainMenuActivity : AppCompatActivity() {
