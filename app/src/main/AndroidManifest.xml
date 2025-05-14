@@ -13,9 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme._25B11345BPacmanRace"
         tools:targetApi="31">
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activities.MainActivity" />
         <activity
-            android:name=".MainMenuActivity"
+            android:name=".activities.MainMenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

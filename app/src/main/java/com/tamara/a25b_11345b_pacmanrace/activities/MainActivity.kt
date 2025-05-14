@@ -13,6 +13,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.tamara.a25b_11345b_pacmanrace.logic.GameLogic
 import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.utilities.SignalManager
+import com.tamara.a25b_11345b_pacmanrace.data.HighScoresManager
+import com.tamara.a25b_11345b_pacmanrace.data.HighScore
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -219,6 +224,17 @@ class MainActivity : AppCompatActivity() {
 
             if (lives == 0) {
                 SignalManager.getInstance().toast("Game Over! Score: $score\"")
+                val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+                val highScore = HighScore(
+                    score = score,
+                    distance = distance,
+                    date = currentDate,
+                    mode = useSensor,
+                    latitude = 0.0,
+                    longitude = 0.0
+                )
+                HighScoresManager.addHighScore(highScore)
+
 
                 gameLogic?.setGenerateObstacles(false)
 
