@@ -7,6 +7,7 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.adapters.HighScoresAdapter
 import com.tamara.a25b_11345b_pacmanrace.data.HighScore
@@ -29,6 +30,11 @@ class HighScoresActivity : AppCompatActivity() {
         sortingSpinner = findViewById(R.id.high_scores_spinner)
         filterSpinner = findViewById(R.id.high_scores_filter_spinner)
         recyclerView = findViewById(R.id.high_scores_recycler)
+
+        val backBtn: MaterialButton = findViewById(R.id.high_scores_back_btn)
+        backBtn.setOnClickListener {
+            finish() // Go back to MainMenuActivity
+        }
 
         recyclerView?.layoutManager = LinearLayoutManager(this)
 

@@ -31,8 +31,8 @@ class HighScoresAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: HighScoreViewHolder, position: Int) {
         val score = highScores[position]
-        holder.scoreText.text = "Score: ${score.score}"
-        holder.distanceText.text = "Distance: ${score.distance}m"
+        holder.scoreText.text = "${score.score}"
+        holder.distanceText.text = "${score.distance}m"
         holder.dateText.text = score.date
 
         // Placeholder - to be implemented later

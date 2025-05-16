@@ -68,8 +68,9 @@ class GameLogic(private val rows: Int = 11, private val cols: Int = 5) {
         emptyRowCooldown = 1
         return true
     }
+
     fun checkCollision(): Boolean {
-        return obstacleMatrix[rows - 1][PLAYER_COL] == 1
+        return obstacleMatrix[rows - 1][PLAYER_COL] in 1..3
     }
 
     fun resetBottomRow() {

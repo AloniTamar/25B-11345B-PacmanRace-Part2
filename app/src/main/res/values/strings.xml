@@ -9,11 +9,17 @@
     <string name="tilt_movement">Tilt Movement</string>
     <string name="show_location">Show Location</string>
     <string name="_2025_05_13">2025–05–13</string>
-    <string name="distance_2300m">Distance: 2300m</string>
-    <string name="score_1200">Score: 1200</string>
+    <string name="_12">12</string>
+    <string name="_2300m">2300m</string>
     <string name="mode_icon">Game speed mode icon</string>
     <string name="sort_by">Sort by:</string>
     <string name="filter_by_mode">Filter by mode:</string>
+    <string name="score_title">Score</string>
+    <string name="distance_title">Distance</string>
+    <string name="date_title">Date</string>
+    <string name="mode_title">Mode</string>
+    <string name="location_title">Location</string>
+    <string name="back">Back</string>
     <string-array name="sort_options">
         <item>Score</item>
         <item>Distance</item>
