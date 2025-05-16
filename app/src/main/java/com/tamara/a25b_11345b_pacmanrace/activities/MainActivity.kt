@@ -26,9 +26,6 @@ class MainActivity : AppCompatActivity() {
     private var leftBtn: FloatingActionButton? = null
     private var rightBtn: FloatingActionButton? = null
     private var gameTimer: CountDownTimer? = null
-    private var lives = 3
-    private var score = 0
-    private var distance = 0
     private var scoreTextView: TextView? = null
     private var useSensor: Boolean = false
     private var distanceTextView: TextView? = null
@@ -39,10 +36,16 @@ class MainActivity : AppCompatActivity() {
         private const val NUM_COLS = 5
         private const val MARGINS = 16
         private const val PADDING = 8
+        private var lives = 3
+        private var score = 0
+        private var distance = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        HighScoresManager.init(this)
+
         setContentView(R.layout.activity_main)
         useSensor = intent.getBooleanExtra("EXTRA_SENSOR_ENABLED", false)
 
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startGame() {
         gameTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
+            @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 val moved = gameLogic?.updateObstacles() ?: false
                 if (moved) {
@@ -242,10 +246,7 @@ class MainActivity : AppCompatActivity() {
                 drawObstacles()
 
                 grid?.get(0)?.get(0)?.postDelayed({
-                    resetGame()
-                    drawPlayer()
-                    gameLogic?.setGenerateObstacles(true)
-                    SignalManager.getInstance().toast("New Game Started!")
+                    finish()
                 }, 2100)
             } else {
                 SignalManager.getInstance().toast("Ouch! You hit a ghost! Lives left: $lives")
@@ -271,6 +272,4 @@ class MainActivity : AppCompatActivity() {
         val distanceText = "Distance: $distance"
         scoreTextView?.text = "$scoreText\n$distanceText"
     }
-
-
 }

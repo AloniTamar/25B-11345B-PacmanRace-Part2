@@ -12,6 +12,7 @@ import com.tamara.a25b_11345b_pacmanrace.adapters.HighScoresAdapter
 import com.tamara.a25b_11345b_pacmanrace.data.HighScore
 import com.tamara.a25b_11345b_pacmanrace.data.HighScoresManager
 
+
 class HighScoresActivity : AppCompatActivity() {
 
     private var sortingSpinner: Spinner? = null
@@ -20,10 +21,11 @@ class HighScoresActivity : AppCompatActivity() {
     private var adapter: HighScoresAdapter? = null
     private var allScores: List<HighScore> = emptyList()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_high_scores)
-
+        HighScoresManager.init(this)
         sortingSpinner = findViewById(R.id.high_scores_spinner)
         filterSpinner = findViewById(R.id.high_scores_filter_spinner)
         recyclerView = findViewById(R.id.high_scores_recycler)
@@ -47,29 +49,6 @@ class HighScoresActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-
-        sortingSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?, position: Int, id: Long
-            ) {
-                updateList()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
-        filterSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?, position: Int, id: Long
-            ) {
-                updateList()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 

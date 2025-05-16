@@ -38,7 +38,9 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         btnViewScores?.setOnClickListener {
-            // TODO: Implement high scores screen logic later
+            val intent = Intent(this@MainMenuActivity, HighScoresActivity::class.java)
+            startActivity(intent)
         }
+
     }
 }

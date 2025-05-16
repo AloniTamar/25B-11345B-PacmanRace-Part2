@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.data.HighScore
@@ -19,7 +20,7 @@ class HighScoresAdapter(
         val distanceText: TextView = itemView.findViewById(R.id.item_distance)
         val dateText: TextView = itemView.findViewById(R.id.item_date)
         val locationButton: ImageButton = itemView.findViewById(R.id.item_location_btn)
-        val modeIcon: ImageButton = itemView.findViewById(R.id.item_mode_icon)
+        val modeIcon: ImageView = itemView.findViewById(R.id.item_mode_icon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HighScoreViewHolder {
