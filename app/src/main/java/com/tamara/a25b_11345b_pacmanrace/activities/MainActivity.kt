@@ -272,4 +272,9 @@ class MainActivity : AppCompatActivity() {
         val distanceText = "Distance: $distance"
         scoreTextView?.text = "$scoreText\n$distanceText"
     }
+
+    override fun onPause() {
+        super.onPause()
+        gameTimer?.cancel()
+    }
 }
