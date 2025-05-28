@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private var gameTimer: CountDownTimer? = null
     private var scoreTextView: TextView? = null
     private var useSensor: Boolean = false
+    private var playerLat: Double = 0.0
+    private var playerLon: Double = 0.0
     private var distanceTextView: TextView? = null
 
 
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         useSensor = intent.getBooleanExtra("EXTRA_SENSOR_ENABLED", false)
+        playerLat = intent.getDoubleExtra("EXTRA_LATITUDE", 0.0)
+        playerLon = intent.getDoubleExtra("EXTRA_LONGITUDE", 0.0)
 
         SignalManager.init(this)
 
@@ -58,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         findViews()
         initViews()
         initListeners()
+
+        resetGame()
         startGame()
     }
 
@@ -150,6 +156,7 @@ class MainActivity : AppCompatActivity() {
     private fun resetGame() {
         lives = 3
         score = 0
+        distance = 0
         updateHeartsUI()
         gameLogic?.resetGame()
         scoreTextView?.text = "Score: $score"
@@ -234,8 +241,8 @@ class MainActivity : AppCompatActivity() {
                     distance = distance,
                     date = currentDate,
                     mode = useSensor,
-                    latitude = 0.0,
-                    longitude = 0.0
+                    latitude = playerLat,
+                    longitude = playerLon
                 )
                 HighScoresManager.addHighScore(highScore)
 

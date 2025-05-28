@@ -30,9 +30,19 @@ object HighScoresManager {
     }
 
     fun addHighScore(score: HighScore) {
-        val currentList = loadHighScores()
-        currentList.add(score)
-        saveHighScores(currentList)
+        val currentScores = loadHighScores()
+        currentScores.add(score)
+
+        val sorted = currentScores.sortedWith(
+            compareByDescending<HighScore> { it.score }
+                .thenByDescending { it.distance }
+                .thenByDescending { it.date }
+        )
+
+        val top10 = sorted.take(10)
+
+        val json = gson.toJson(top10)
+        prefs.edit().putString(KEY_HIGH_SCORES, json).apply()
     }
 
     fun clearAll() {

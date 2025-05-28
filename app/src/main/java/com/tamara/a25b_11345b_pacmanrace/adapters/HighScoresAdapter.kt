@@ -10,6 +10,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.data.HighScore
+import com.tamara.a25b_11345b_pacmanrace.fragments.MapDialogFragment
+import androidx.fragment.app.FragmentActivity
+
 
 class HighScoresAdapter(
     private val highScores: List<HighScore>
@@ -35,9 +38,12 @@ class HighScoresAdapter(
         holder.distanceText.text = "${score.distance}m"
         holder.dateText.text = score.date
 
-        // Placeholder - to be implemented later
         holder.locationButton.setOnClickListener {
-            // Show location popup in the future
+            val context = holder.itemView.context
+            if (context is FragmentActivity) {
+                val fragment = MapDialogFragment.newInstance(score.latitude, score.longitude)
+                fragment.show(context.supportFragmentManager, "mapDialog")
+            }
         }
 
         val iconRes = if (score.mode) {
