@@ -15,6 +15,7 @@ import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.utilities.SignalManager
 import com.tamara.a25b_11345b_pacmanrace.data.HighScoresManager
 import com.tamara.a25b_11345b_pacmanrace.data.HighScore
+import com.tamara.a25b_11345b_pacmanrace.utilities.SingleSoundPlayer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private var rightBtn: FloatingActionButton? = null
     private var gameTimer: CountDownTimer? = null
     private var scoreTextView: TextView? = null
+    private var soundPlayer: SingleSoundPlayer? = null
     private var useSensor: Boolean = false
     private var playerLat: Double = 0.0
     private var playerLon: Double = 0.0
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         HighScoresManager.init(this)
 
         setContentView(R.layout.activity_main)
+        soundPlayer = SingleSoundPlayer(this)
         useSensor = intent.getBooleanExtra("EXTRA_SENSOR_ENABLED", false)
         playerLat = intent.getDoubleExtra("EXTRA_LATITUDE", 0.0)
         playerLon = intent.getDoubleExtra("EXTRA_LONGITUDE", 0.0)
@@ -235,6 +238,7 @@ class MainActivity : AppCompatActivity() {
 
             if (lives == 0) {
                 SignalManager.getInstance().toast("Game Over! Score: $score\"")
+                soundPlayer?.playSound(R.raw.end_game_sound)
                 val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
                 val highScore = HighScore(
                     score = score,
@@ -256,6 +260,7 @@ class MainActivity : AppCompatActivity() {
                     finish()
                 }, 2100)
             } else {
+                soundPlayer?.playSound(R.raw.crash_sound)
                 SignalManager.getInstance().toast("Ouch! You hit a ghost! Lives left: $lives")
             }
         }
@@ -267,18 +272,19 @@ class MainActivity : AppCompatActivity() {
         val matrix = gameLogic?.getObstacleMatrix() ?: return
 
         if (matrix[NUM_ROWS - 1][col] == 4) {
+            soundPlayer?.playSound(R.raw.coin_sound)
             score += 1
             scoreTextView?.text = "Score: $score"
             gameLogic?.resetBottomRow()
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun updateDistanceUI() {
-        val scoreText = "Score: $score"
-        val distanceText = "Distance: $distance"
-        scoreTextView?.text = "$scoreText\n$distanceText"
-    }
+//    @SuppressLint("SetTextI18n")
+//    private fun updateDistanceUI() {
+//        val scoreText = "Score: $score"
+//        val distanceText = "Distance: $distance"
+//        scoreTextView?.text = "$scoreText\n$distanceText"
+//    }
 
     override fun onPause() {
         super.onPause()
