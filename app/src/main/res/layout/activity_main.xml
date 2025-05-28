@@ -5,7 +5,7 @@
     android:id="@+id/main_LAY_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_soft_blue"
+    android:background="@drawable/ic_game_background"
     tools:context=".activities.MainActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat

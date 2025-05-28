@@ -2,9 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple_300">#BA68C8</color>
-    <color name="purple_400">#AB47BC</color>
-    <color name="teal_200">#03DAC5</color>
-    <color name="teal_700">#018786</color>
+    <color name="purple_300">#C4ADE2</color>
+    <color name="purple_400">#9B75CD</color>
+    <color name="teal_200">#CDECEA</color>
+    <color name="teal_700">#85CCC7</color>
     <color name="background_soft_blue">#D6E2FD</color>
+    <color name="item">#C6D3FD</color>
 </resources>
