@@ -39,30 +39,17 @@ class SignalManager private constructor(context: Context) {
         }
     }
 
-    fun vibrate() {
-        contextRef.get()?.let { context: Context ->
-            val vibrator: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator
-            } else {
-                context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            }
+    fun vibrate(duration: Long = 500) {
+        contextRef.get()?.let { context ->
+            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val SOSPattern = longArrayOf(
-                    0, 200, 100, 200, 100, 200,
-                    300, 500, 100, 500, 100, 500,
-                    300, 200, 100, 200, 100, 200
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
                 )
-
-                val waveFormVibrationEffect = VibrationEffect.createWaveform(
-                    SOSPattern,
-                    -1
-                )
-
-                vibrator.vibrate(waveFormVibrationEffect)
             } else {
-                vibrator.vibrate(500L)
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(duration)
             }
         }
     }
