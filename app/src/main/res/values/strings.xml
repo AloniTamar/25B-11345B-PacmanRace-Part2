@@ -20,6 +20,9 @@
     <string name="mode_title">Mode</string>
     <string name="location_title">Location</string>
     <string name="back">Back</string>
+    <string name="pacman_icon">pacman icon</string>
+    <string name="ghost_icon">ghost icon</string>
+    <string name="welcome_title">Welcome to Pacman Race</string>
     <string-array name="sort_options">
         <item>Score</item>
         <item>Distance</item>

@@ -1,42 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="48dp"
-    android:background="@color/background_soft_blue">
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="60dp"
+        android:text="@string/welcome_title"
+        android:textAlignment="center"
+        android:textColor="@color/purple_400"
+        android:textSize="48sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/icon_pacman"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="@string/pacman_icon"
+            android:src="@drawable/ic_pacman" />
+
+        <ImageView
+            android:id="@+id/icon_ghost"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="@string/ghost_icon"
+            android:src="@drawable/ic_ghost_red" />
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start_game"
         android:layout_width="200dp"
         android:layout_height="48dp"
-        android:text="@string/start_game"
-        android:textColor="@android:color/black"
-        android:backgroundTint="@color/purple_400"
-        app:cornerRadius="12dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/purple_400"
+        android:text="@string/start_game"
+        android:textColor="@android:color/white"
+        app:cornerRadius="12dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_view_scores"
         android:layout_width="200dp"
         android:layout_height="48dp"
-        android:text="@string/high_scores"
-        android:textColor="@android:color/black"
-        android:backgroundTint="@color/purple_400"
-        app:cornerRadius="12dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/purple_400"
+        android:text="@string/high_scores"
+        android:textColor="@android:color/white"
+        app:cornerRadius="12dp" />
 
     <Switch
         android:id="@+id/switch_sensor_movement"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:text="@string/tilt_movement"
         android:layout_marginBottom="24dp"
+        android:text="@string/tilt_movement"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </LinearLayout>

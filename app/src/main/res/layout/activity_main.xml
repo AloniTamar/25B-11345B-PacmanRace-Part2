@@ -86,9 +86,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="22dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/bottom_margin_controls"
         android:paddingStart="@dimen/button_padding_horizontal"
         android:paddingEnd="@dimen/button_padding_horizontal">
 
@@ -96,9 +96,9 @@
             android:id="@+id/main_IMG_leftBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_left"
             android:contentDescription="@string/move_left"
-            app:backgroundTint="@color/purple_300" />
+            android:src="@drawable/ic_arrow_left"
+            app:backgroundTint="@color/purple_400" />
 
         <Space
             android:layout_width="0dp"
@@ -109,8 +109,8 @@
             android:id="@+id/main_IMG_rightBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right"
             android:contentDescription="@string/move_right"
-            app:backgroundTint="@color/purple_300" />
+            android:src="@drawable/ic_arrow_right"
+            app:backgroundTint="@color/purple_400" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>
