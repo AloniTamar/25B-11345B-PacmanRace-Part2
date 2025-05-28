@@ -28,16 +28,16 @@
 
         <ImageView
             android:id="@+id/icon_pacman"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="24dp"
             android:contentDescription="@string/pacman_icon"
             android:src="@drawable/ic_pacman" />
 
         <ImageView
             android:id="@+id/icon_ghost"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@string/ghost_icon"
             android:src="@drawable/ic_ghost_red" />
     </LinearLayout>

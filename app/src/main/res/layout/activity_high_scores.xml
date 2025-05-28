@@ -148,7 +148,7 @@
         android:id="@+id/pacman_ghost_icons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/high_scores_back_btn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -157,16 +157,16 @@
 
         <ImageView
             android:id="@+id/icon_pacman"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/pacman_icon"
             android:src="@drawable/ic_pacman" />
 
         <ImageView
             android:id="@+id/icon_ghost"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:contentDescription="@string/ghost_icon"
             android:src="@drawable/ic_ghost_red" />
     </LinearLayout>
