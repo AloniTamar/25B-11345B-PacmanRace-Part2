@@ -21,8 +21,8 @@ import com.tamara.a25b_11345b_pacmanrace.data.HighScore
 import com.tamara.a25b_11345b_pacmanrace.utilities.SingleSoundPlayer
 import com.tamara.a25b_11345b_pacmanrace.interfaces.TiltCallback
 import com.tamara.a25b_11345b_pacmanrace.interfaces.handleTiltX
+import com.tamara.a25b_11345b_pacmanrace.interfaces.handleTiltY
 import com.tamara.a25b_11345b_pacmanrace.utilities.TiltDetector
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,13 +33,9 @@ class MainActivity : AppCompatActivity() {
     private var gameTimer: CountDownTimer? = null
     private var scoreTextView: TextView? = null
     private var soundPlayer: SingleSoundPlayer? = null
-    private var useSensor: Boolean = false
-    private var playerLat: Double = 0.0
-    private var playerLon: Double = 0.0
     private var distanceTextView: TextView? = null
     private var sensorManager: SensorManager? = null
     private var tiltDetector: TiltDetector? = null
-    private var isFastMode = false
 
 
     companion object {
@@ -50,6 +46,10 @@ class MainActivity : AppCompatActivity() {
         private var lives = 3
         private var score = 0
         private var distance = 0
+        private var speedIndex = 0
+        private var playerLat: Double = 0.0
+        private var playerLon: Double = 0.0
+        private var useSensor: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,12 +69,13 @@ class MainActivity : AppCompatActivity() {
         if (useSensor) {
             leftBtn?.visibility = View.GONE
             rightBtn?.visibility = View.GONE
+        }
 
-            sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-            tiltDetector = TiltDetector(
-                context = this,
-                tiltCallback = object : TiltCallback {
-                    override fun tiltX(direction: Float) {
+        tiltDetector = TiltDetector(
+            context = this,
+            tiltCallback = object : TiltCallback {
+                override fun tiltX(direction: Float) {
+                    if (useSensor) {
                         handleTiltX(direction,
                             moveLeft = {
                                 clearPlayer()
@@ -92,13 +93,24 @@ class MainActivity : AppCompatActivity() {
                             }
                         )
                     }
-
-                    override fun tiltY(y: Float) {
-                        // To be implemented later
-                    }
                 }
-            )
-        }
+
+                override fun tiltY(y: Float) {
+                    handleTiltY(
+                        y = y,
+                        currentSpeedIndex = speedIndex,
+                        onSpeedChange = { newIndex ->
+                            speedIndex = newIndex
+                            SignalManager.getInstance().toast(
+                                if (newIndex == 1) "Fast Mode" else "Slow Mode"
+                            )
+                            gameTimer?.cancel()
+                            startGame()
+                        }
+                    )
+                }
+            }
+        )
 
         gameLogic = GameLogic(cols = NUM_COLS, rows = NUM_ROWS)
         initViews()
@@ -124,7 +136,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startGame() {
-        gameTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
+        val interval = if (speedIndex == 1) 300L else 1000L
+
+        gameTimer = object : CountDownTimer(Long.MAX_VALUE, interval) {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 val moved = gameLogic?.updateObstacles() == true
@@ -138,12 +152,11 @@ class MainActivity : AppCompatActivity() {
                 checkCoinCollection()
             }
 
-            override fun onFinish() {
-                // TBD in the future
-            }
+            override fun onFinish() {}
         }
         gameTimer?.start()
     }
+
 
     private fun drawObstacles() {
         val matrix = gameLogic?.getObstacleMatrix() ?: return
@@ -273,19 +286,17 @@ class MainActivity : AppCompatActivity() {
             SignalManager.getInstance().vibrate()
 
             if (lives == 0) {
-                SignalManager.getInstance().toast("Game Over! Score: $score\"")
+                SignalManager.getInstance().toast("Game Over!")
                 soundPlayer?.playSound(R.raw.end_game_sound)
                 val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
                 val highScore = HighScore(
                     score = score,
                     distance = distance,
                     date = currentDate,
-                    mode = isFastMode,
                     latitude = playerLat,
                     longitude = playerLon
                 )
                 HighScoresManager.addHighScore(highScore)
-
 
                 gameLogic?.setGenerateObstacles(false)
 
@@ -297,7 +308,7 @@ class MainActivity : AppCompatActivity() {
                 }, 2100)
             } else {
                 soundPlayer?.playSound(R.raw.crash_sound)
-                SignalManager.getInstance().toast("Ouch! You hit a ghost! Lives left: $lives")
+                SignalManager.getInstance().toast("Ouch! You hit a ghost!")
             }
         }
     }
@@ -325,9 +336,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (useSensor) {
-            tiltDetector?.start()
-        }
+        tiltDetector?.start()
     }
 
 

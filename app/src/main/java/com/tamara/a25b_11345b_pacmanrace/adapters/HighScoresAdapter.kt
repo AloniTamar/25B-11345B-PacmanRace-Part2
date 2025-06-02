@@ -23,7 +23,6 @@ class HighScoresAdapter(
         val distanceText: TextView = itemView.findViewById(R.id.item_distance)
         val dateText: TextView = itemView.findViewById(R.id.item_date)
         val locationButton: ImageButton = itemView.findViewById(R.id.item_location_btn)
-        val modeIcon: ImageView = itemView.findViewById(R.id.item_mode_icon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HighScoreViewHolder {
@@ -45,14 +44,6 @@ class HighScoresAdapter(
                 fragment.show(context.supportFragmentManager, "mapDialog")
             }
         }
-
-        val iconRes = if (score.mode) {
-            R.drawable.ic_mode_fast // rabbit
-        } else {
-            R.drawable.ic_mode_slow // turtle
-        }
-        holder.modeIcon.setImageResource(iconRes)
-
     }
 
     override fun getItemCount(): Int = highScores.size

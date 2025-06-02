@@ -60,8 +60,6 @@ class HighScoresActivity : AppCompatActivity() {
 
     private fun updateList() {
         var filtered = when (filterSpinner?.selectedItemPosition) {
-            1 -> allScores.filter { !it.mode }
-            2 -> allScores.filter { it.mode }
             else -> allScores
         }
 

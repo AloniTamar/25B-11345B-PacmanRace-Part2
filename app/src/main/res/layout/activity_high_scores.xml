@@ -48,15 +48,6 @@
             android:textColor="@android:color/black"
             android:textAlignment="center"/>
 
-        <TextView
-            android:id="@+id/header_mode"
-            android:layout_width="0dp"
-            android:layout_weight="0.6"
-            android:layout_height="wrap_content"
-            android:text="@string/mode_title"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/header_location"

@@ -80,19 +80,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="center_horizontal" />
 
-    <!-- Mode Icon -->
-    <ImageView
-        android:id="@+id/item_mode_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:contentDescription="@string/mode_icon"
-        android:src="@drawable/ic_mode_slow"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="@id/guideline3"
-        app:layout_constraintEnd_toStartOf="@id/guideline4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <!-- Location Button -->
     <ImageButton
         android:id="@+id/item_location_btn"

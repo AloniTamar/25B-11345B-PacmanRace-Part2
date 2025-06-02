@@ -4,7 +4,6 @@ data class HighScore(
     val score: Int,
     val distance: Int,
     val date: String,
-    val mode: Boolean,
     val latitude: Double,
     val longitude: Double
 )
