@@ -10,14 +10,18 @@ import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import java.text.SimpleDateFormat
+import android.hardware.SensorManager
+import java.util.*
 import com.tamara.a25b_11345b_pacmanrace.logic.GameLogic
 import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.utilities.SignalManager
 import com.tamara.a25b_11345b_pacmanrace.data.HighScoresManager
 import com.tamara.a25b_11345b_pacmanrace.data.HighScore
 import com.tamara.a25b_11345b_pacmanrace.utilities.SingleSoundPlayer
-import java.text.SimpleDateFormat
-import java.util.*
+import com.tamara.a25b_11345b_pacmanrace.interfaces.TiltCallback
+import com.tamara.a25b_11345b_pacmanrace.interfaces.handleTiltX
+import com.tamara.a25b_11345b_pacmanrace.utilities.TiltDetector
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +37,9 @@ class MainActivity : AppCompatActivity() {
     private var playerLat: Double = 0.0
     private var playerLon: Double = 0.0
     private var distanceTextView: TextView? = null
+    private var sensorManager: SensorManager? = null
+    private var tiltDetector: TiltDetector? = null
+    private var isFastMode = false
 
 
     companion object {
@@ -47,10 +54,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         HighScoresManager.init(this)
-
         setContentView(R.layout.activity_main)
+
         soundPlayer = SingleSoundPlayer(this)
         useSensor = intent.getBooleanExtra("EXTRA_SENSOR_ENABLED", false)
         playerLat = intent.getDoubleExtra("EXTRA_LATITUDE", 0.0)
@@ -58,14 +64,45 @@ class MainActivity : AppCompatActivity() {
 
         SignalManager.init(this)
 
-        gameLogic = GameLogic(
-            cols = NUM_COLS,
-            rows = NUM_ROWS
-        )
         findViews()
+
+        if (useSensor) {
+            leftBtn?.visibility = View.GONE
+            rightBtn?.visibility = View.GONE
+
+            sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+            tiltDetector = TiltDetector(
+                context = this,
+                tiltCallback = object : TiltCallback {
+                    override fun tiltX(direction: Float) {
+                        handleTiltX(direction,
+                            moveLeft = {
+                                clearPlayer()
+                                gameLogic?.moveLeft()
+                                drawPlayer()
+                                checkPlayerCollision()
+                                checkCoinCollection()
+                            },
+                            moveRight = {
+                                clearPlayer()
+                                gameLogic?.moveRight()
+                                drawPlayer()
+                                checkPlayerCollision()
+                                checkCoinCollection()
+                            }
+                        )
+                    }
+
+                    override fun tiltY(y: Float) {
+                        // To be implemented later
+                    }
+                }
+            )
+        }
+
+        gameLogic = GameLogic(cols = NUM_COLS, rows = NUM_ROWS)
         initViews()
         initListeners()
-
         resetGame()
         startGame()
     }
@@ -78,7 +115,6 @@ class MainActivity : AppCompatActivity() {
         playerCell.visibility = View.VISIBLE
     }
 
-
     private fun clearPlayer() {
         val col = gameLogic?.getPlayerColumn() ?: return
         val playerCell = grid?.get(NUM_ROWS - 1)?.getOrNull(col) ?: return
@@ -87,12 +123,11 @@ class MainActivity : AppCompatActivity() {
         playerCell.visibility = View.INVISIBLE
     }
 
-
     private fun startGame() {
         gameTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
-                val moved = gameLogic?.updateObstacles() ?: false
+                val moved = gameLogic?.updateObstacles() == true
                 if (moved) {
                     distance += 100
                     distanceTextView?.text = "Distance: $distance"
@@ -169,7 +204,6 @@ class MainActivity : AppCompatActivity() {
         scoreTextView?.text = "Score: $score"
     }
 
-
     private fun findViews() {
         leftBtn = findViewById(R.id.main_IMG_leftBtn)
         rightBtn = findViewById(R.id.main_IMG_rightBtn)
@@ -207,8 +241,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun initViews() {
         drawPlayer()
@@ -248,7 +280,7 @@ class MainActivity : AppCompatActivity() {
                     score = score,
                     distance = distance,
                     date = currentDate,
-                    mode = useSensor,
+                    mode = isFastMode,
                     latitude = playerLat,
                     longitude = playerLon
                 )
@@ -286,5 +318,17 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         gameTimer?.cancel()
+        if (useSensor) {
+            tiltDetector?.stop()
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (useSensor) {
+            tiltDetector?.start()
+        }
+    }
+
+
 }

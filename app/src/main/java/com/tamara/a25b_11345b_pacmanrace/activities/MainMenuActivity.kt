@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
 import android.content.pm.PackageManager
@@ -12,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.tamara.a25b_11345b_pacmanrace.R
 import com.tamara.a25b_11345b_pacmanrace.utilities.SignalManager
 
@@ -20,7 +20,7 @@ class MainMenuActivity : AppCompatActivity() {
 
     private var btnStartGame: Button? = null
     private var btnViewScores: Button? = null
-    private var switchSensorMovement: Switch? = null
+    private var switchSensorMovement: SwitchMaterial? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PREFS = "location_prefs"
     private val LOCATION_MODE_KEY = "location_mode"
@@ -40,7 +40,7 @@ class MainMenuActivity : AppCompatActivity() {
     private fun findViews() {
         btnStartGame = findViewById(R.id.btn_start_game)
         btnViewScores = findViewById(R.id.btn_view_scores)
-        switchSensorMovement = findViewById(R.id.switch_sensor_movement)
+        switchSensorMovement = findViewById(R.id.menu_SWITCH_tilt)
     }
 
     private fun initListeners() {

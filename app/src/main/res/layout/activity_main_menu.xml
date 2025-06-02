@@ -64,12 +64,10 @@
         android:textColor="@android:color/white"
         app:cornerRadius="12dp" />
 
-    <Switch
-        android:id="@+id/switch_sensor_movement"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/menu_SWITCH_tilt"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/tilt_movement"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:layout_height="wrap_content"
+        android:text="@string/tilt_movement" />
 
 </LinearLayout>
