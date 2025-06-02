@@ -50,24 +50,27 @@ class GameLogic(private val rows: Int = 11, private val cols: Int = 5) {
             obstacleMatrix[0][ghostCol] = ghostType
 
         } else if (chance in 50..66) {
-            val coinCol = Random.Default.nextInt(cols)
-            obstacleMatrix[0][coinCol] = 4
+            val fruitCol = Random.Default.nextInt(cols)
+            val fruitType = if (Random.Default.nextBoolean()) 4 else 5
+            obstacleMatrix[0][fruitCol] = fruitType
 
         } else if (chance in 67..84) {
             val ghostCol = Random.Default.nextInt(cols)
             val ghostType = Random.Default.nextInt(1, 4)
             obstacleMatrix[0][ghostCol] = ghostType
 
-            var coinCol = Random.Default.nextInt(cols)
-            while (coinCol == ghostCol) {
-                coinCol = Random.Default.nextInt(cols)
+            var fruitCol = Random.Default.nextInt(cols)
+            while (fruitCol == ghostCol) {
+                fruitCol = Random.Default.nextInt(cols)
             }
-            obstacleMatrix[0][coinCol] = 4
+            val fruitType = if (Random.Default.nextBoolean()) 4 else 5
+            obstacleMatrix[0][fruitCol] = fruitType
         }
 
         emptyRowCooldown = 1
         return true
     }
+
 
     fun checkCollision(): Boolean {
         return obstacleMatrix[rows - 1][PLAYER_COL] in 1..3

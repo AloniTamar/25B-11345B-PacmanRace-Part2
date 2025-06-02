@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         val col = gameLogic?.getPlayerColumn() ?: return
         val playerCell = grid?.get(NUM_ROWS - 1)?.getOrNull(col) ?: return
 
-        playerCell.setBackgroundResource(R.drawable.ic_ghost_green)
+        playerCell.setBackgroundResource(R.drawable.ic_ghost_pink)
         playerCell.visibility = View.INVISIBLE
     }
 
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                         imageView.visibility = View.VISIBLE
                     }
                     2 -> {
-                        imageView.setBackgroundResource(R.drawable.ic_ghost_green)
+                        imageView.setBackgroundResource(R.drawable.ic_ghost_pink)
                         imageView.visibility = View.VISIBLE
                     }
                     3 -> {
@@ -130,7 +130,11 @@ class MainActivity : AppCompatActivity() {
                         imageView.visibility = View.VISIBLE
                     }
                     4 -> {
-                        imageView.setBackgroundResource(R.drawable.ic_coin)
+                        imageView.setBackgroundResource(R.drawable.ic_strawberry)
+                        imageView.visibility = View.VISIBLE
+                    }
+                    5 -> {
+                        imageView.setBackgroundResource(R.drawable.ic_cherry)
                         imageView.visibility = View.VISIBLE
                     }
                     else -> {
@@ -195,7 +199,7 @@ class MainActivity : AppCompatActivity() {
                 imageView.scaleType = ImageView.ScaleType.FIT_CENTER
                 imageView.setPadding(PADDING, PADDING, PADDING, PADDING)
 
-                imageView.setBackgroundResource(R.drawable.ic_ghost_green)
+                imageView.setBackgroundResource(R.drawable.ic_ghost_pink)
                 imageView.visibility = ImageView.INVISIBLE
 
                 gridLayout.addView(imageView)
@@ -271,20 +275,13 @@ class MainActivity : AppCompatActivity() {
         val col = gameLogic?.getPlayerColumn() ?: return
         val matrix = gameLogic?.getObstacleMatrix() ?: return
 
-        if (matrix[NUM_ROWS - 1][col] == 4) {
+        if (matrix[NUM_ROWS - 1][col] == 4 || matrix[NUM_ROWS - 1][col] == 5) {
             soundPlayer?.playSound(R.raw.coin_sound)
             score += 1
             scoreTextView?.text = "Score: $score"
             gameLogic?.resetBottomRow()
         }
     }
-
-//    @SuppressLint("SetTextI18n")
-//    private fun updateDistanceUI() {
-//        val scoreText = "Score: $score"
-//        val distanceText = "Distance: $distance"
-//        scoreTextView?.text = "$scoreText\n$distanceText"
-//    }
 
     override fun onPause() {
         super.onPause()
