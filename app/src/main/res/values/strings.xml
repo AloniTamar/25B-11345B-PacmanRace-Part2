@@ -6,7 +6,7 @@
     <string name="distance_0">Distance: 0</string>
     <string name="start_game">Start Game</string>
     <string name="high_scores">High Scores</string>
-    <string name="tilt_movement">Tilt Movement</string>
+    <string name="tilt_movement">Tilt to Move Left/Right</string>
     <string name="show_location">Show Location</string>
     <string name="_2025_05_13">2025–05–13</string>
     <string name="_12">12</string>
@@ -33,8 +33,8 @@
         <item>Slow</item>
     </string-array>
     <string name="speed_mode">Speed Mode </string>
-    <string name="auto_speed_mode">Automatic Speed</string>
-    <string name="manual_speed_mode">Manual Speed</string>
+    <string name="tilt_speed_mode">Tilt to Adjust Speed</string>
+    <string name="manual_speed_mode">Manual Speed Selection</string>
     <string name="fast">Fast </string>
 
 </resources>

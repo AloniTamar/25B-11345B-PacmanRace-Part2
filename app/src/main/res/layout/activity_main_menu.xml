@@ -87,7 +87,7 @@
                 android:id="@+id/menu_RB_auto_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/auto_speed_mode"
+                android:text="@string/tilt_speed_mode"
                 android:textColor="@android:color/black" />
 
             <RadioButton
