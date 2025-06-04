@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.widget.RadioGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -46,11 +48,29 @@ class MainMenuActivity : AppCompatActivity() {
     private fun initListeners() {
         btnStartGame?.setOnClickListener {
             val sensorEnabled = switchSensorMovement?.isChecked ?: false
+            val selectedSpeedId = findViewById<RadioGroup>(R.id.menu_RG_speed_mode).checkedRadioButtonId
+
             val prefs = getSharedPreferences(LOCATION_PREFS, MODE_PRIVATE)
             val locationMode = prefs.getString(LOCATION_MODE_KEY, null)
 
+            val handleStart = { isFast: Boolean?, lat: Double, lon: Double ->
+                startGame(sensorEnabled, isFast, lat, lon)
+            }
+
+            val handleManualSpeed = { lat: Double, lon: Double ->
+                showSpeedSelectionDialog { isFast ->
+                    handleStart(isFast, lat, lon)
+                }
+            }
+
             if (locationMode == "never") {
-                startGame(sensorEnabled, 0.0, 0.0)
+                val lat = 0.0
+                val lon = 0.0
+                if (selectedSpeedId == R.id.menu_RB_manual_speed) {
+                    handleManualSpeed(lat, lon)
+                } else {
+                    handleStart(null, lat, lon)
+                }
             } else {
                 if (!isLocationEnabled()) {
                     SignalManager.getInstance().toast("Please enable location services")
@@ -60,10 +80,20 @@ class MainMenuActivity : AppCompatActivity() {
                 val permission = Manifest.permission.ACCESS_FINE_LOCATION
                 if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
                     fetchCurrentLocationWithRetry { lat, lon ->
-                        startGame(sensorEnabled, lat, lon)
+                        if (selectedSpeedId == R.id.menu_RB_manual_speed) {
+                            handleManualSpeed(lat, lon)
+                        } else {
+                            handleStart(null, lat, lon)
+                        }
                     }
                 } else {
-                    startGame(sensorEnabled, 0.0, 0.0)
+                    val lat = 0.0
+                    val lon = 0.0
+                    if (selectedSpeedId == R.id.menu_RB_manual_speed) {
+                        handleManualSpeed(lat, lon)
+                    } else {
+                        handleStart(null, lat, lon)
+                    }
                 }
             }
         }
@@ -72,7 +102,6 @@ class MainMenuActivity : AppCompatActivity() {
             val intent = Intent(this@MainMenuActivity, HighScoresActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     private fun requestLocationPermission() {
@@ -92,13 +121,6 @@ class MainMenuActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 101) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Optional: Toast or log permission granted
-            } else {
-                // Optional: Toast or fallback logic if denied
-            }
-        }
     }
 
     @SuppressLint("MissingPermission")
@@ -132,11 +154,16 @@ class MainMenuActivity : AppCompatActivity() {
             }
     }
 
-    private fun startGame(sensorEnabled: Boolean, lat: Double, lon: Double) {
-        val intent = Intent(this@MainMenuActivity, MainActivity::class.java)
+    private fun startGame(sensorEnabled: Boolean, manualSpeedFast: Boolean?, lat: Double, lon: Double) {
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("EXTRA_SENSOR_ENABLED", sensorEnabled)
         intent.putExtra("EXTRA_LATITUDE", lat)
         intent.putExtra("EXTRA_LONGITUDE", lon)
+
+        manualSpeedFast?.let {
+            intent.putExtra("EXTRA_MANUAL_FAST_MODE", it)
+        }
+
         startActivity(intent)
     }
 
@@ -145,4 +172,18 @@ class MainMenuActivity : AppCompatActivity() {
         return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)
     }
+
+    private fun showSpeedSelectionDialog(onSpeedChosen: (Boolean) -> Unit) {
+        val options = arrayOf("Fast", "Slow")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Choose Speed Mode")
+            .setItems(options) { _, which ->
+                val isFast = (which == 0)
+                onSpeedChosen(isFast)
+            }
+            .setCancelable(true)
+            .show()
+    }
+
 }

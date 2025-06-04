@@ -32,5 +32,9 @@
         <item>Fast</item>
         <item>Slow</item>
     </string-array>
+    <string name="speed_mode">Speed Mode </string>
+    <string name="auto_speed_mode">Automatic Speed</string>
+    <string name="manual_speed_mode">Manual Speed</string>
+    <string name="fast">Fast </string>
 
 </resources>

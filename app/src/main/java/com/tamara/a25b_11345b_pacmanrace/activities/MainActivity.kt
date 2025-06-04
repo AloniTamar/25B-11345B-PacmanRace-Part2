@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     private var scoreTextView: TextView? = null
     private var soundPlayer: SingleSoundPlayer? = null
     private var distanceTextView: TextView? = null
-    private var sensorManager: SensorManager? = null
     private var tiltDetector: TiltDetector? = null
 
 
@@ -50,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         private var playerLat: Double = 0.0
         private var playerLon: Double = 0.0
         private var useSensor: Boolean = false
+        private var manualSpeedFast: Boolean? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity() {
         useSensor = intent.getBooleanExtra("EXTRA_SENSOR_ENABLED", false)
         playerLat = intent.getDoubleExtra("EXTRA_LATITUDE", 0.0)
         playerLon = intent.getDoubleExtra("EXTRA_LONGITUDE", 0.0)
+        manualSpeedFast = if (intent.hasExtra("EXTRA_MANUAL_FAST_MODE"))
+            intent.getBooleanExtra("EXTRA_MANUAL_FAST_MODE", false)
+        else null
 
         SignalManager.init(this)
 
@@ -96,18 +99,17 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun tiltY(y: Float) {
-                    handleTiltY(
-                        y = y,
-                        currentSpeedIndex = speedIndex,
-                        onSpeedChange = { newIndex ->
-                            speedIndex = newIndex
-                            SignalManager.getInstance().toast(
-                                if (newIndex == 1) "Fast Mode" else "Slow Mode"
-                            )
-                            gameTimer?.cancel()
-                            startGame()
-                        }
-                    )
+                    if (manualSpeedFast == null) {
+                        handleTiltY(
+                            y = y,
+                            currentSpeedIndex = speedIndex,
+                            onSpeedChange = { newIndex ->
+                                speedIndex = newIndex
+                                gameTimer?.cancel()
+                                startGame()
+                            }
+                        )
+                    }
                 }
             }
         )
@@ -136,7 +138,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startGame() {
-        val interval = if (speedIndex == 1) 300L else 1000L
+        val interval = when {
+            manualSpeedFast != null -> {
+                if (manualSpeedFast == true) 300L else 1000L
+            }
+            speedIndex == 1 -> 300L
+            else -> 1000L
+        }
 
         gameTimer = object : CountDownTimer(Long.MAX_VALUE, interval) {
             @SuppressLint("SetTextI18n")
@@ -212,6 +220,7 @@ class MainActivity : AppCompatActivity() {
         lives = 3
         score = 0
         distance = 0
+        speedIndex = 0
         updateHeartsUI()
         gameLogic?.resetGame()
         scoreTextView?.text = "Score: $score"
