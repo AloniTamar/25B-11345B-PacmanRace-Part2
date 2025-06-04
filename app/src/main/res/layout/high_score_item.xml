@@ -9,33 +9,26 @@
     android:layout_marginBottom="4dp"
     android:elevation="2dp">
 
-    <!-- Guidelines to define equal segments -->
+    <!-- Updated Guidelines (only 3 needed to create 4 columns) -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.15"
+        app:layout_constraintGuide_percent="0.25"
         android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.40"
+        app:layout_constraintGuide_percent="0.50"
         android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.65"
-        android:orientation="vertical" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.82"
+        app:layout_constraintGuide_percent="0.75"
         android:orientation="vertical" />
 
     <!-- Score -->
@@ -89,7 +82,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="fitCenter"
         android:contentDescription="@string/show_location"
-        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

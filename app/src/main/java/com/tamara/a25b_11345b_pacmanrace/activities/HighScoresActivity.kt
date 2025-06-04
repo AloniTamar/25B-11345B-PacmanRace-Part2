@@ -28,7 +28,6 @@ class HighScoresActivity : AppCompatActivity() {
         setContentView(R.layout.activity_high_scores)
         HighScoresManager.init(this)
         sortingSpinner = findViewById(R.id.high_scores_spinner)
-        filterSpinner = findViewById(R.id.high_scores_filter_spinner)
         recyclerView = findViewById(R.id.high_scores_recycler)
 
         val backBtn: MaterialButton = findViewById(R.id.high_scores_back_btn)
