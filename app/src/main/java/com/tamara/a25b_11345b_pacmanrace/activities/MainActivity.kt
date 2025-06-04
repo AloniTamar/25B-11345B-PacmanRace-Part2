@@ -140,10 +140,10 @@ class MainActivity : AppCompatActivity() {
     private fun startGame() {
         val interval = when {
             manualSpeedFast != null -> {
-                if (manualSpeedFast == true) 300L else 1000L
+                if (manualSpeedFast == true) 300L else 700L
             }
             speedIndex == 1 -> 300L
-            else -> 1000L
+            else -> 700L
         }
 
         gameTimer = object : CountDownTimer(Long.MAX_VALUE, interval) {
