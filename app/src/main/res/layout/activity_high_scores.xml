@@ -94,6 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:entries="@array/sort_options"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/text_sort_by"
         app:layout_constraintStart_toStartOf="@id/text_sort_by"
         android:layout_marginTop="4dp"/>
